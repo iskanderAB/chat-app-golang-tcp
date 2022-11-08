@@ -57,10 +57,8 @@ func broadcastMessage(conn net.Conn) {
 		if err != nil {
 			break
 		}
-
 		//1  loop through all  connections
 		//2  send the message to all users connected except the sender and have fun ♥
-
 		for connected := range openConnetion {
 			if connected != conn {
 				fmt.Println(msg)
@@ -68,6 +66,6 @@ func broadcastMessage(conn net.Conn) {
 			}
 		}
 	}
-	fmt.Println("fuuuuuck")
 	deadConection <- conn
+	fmt.Println("closed !")
 }

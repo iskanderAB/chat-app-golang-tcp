@@ -8,6 +8,7 @@ import (
 	"net"
 	"os"
 	"strings"
+
 )
 
 func logFatal(err error) {
@@ -24,28 +25,29 @@ func main() {
 	fmt.Println("put ur name for conversation :)  ")
 	var username string
 	fmt.Scanln(&username)
-	username = strings.Trim(username," \r\n")
+	username = strings.Trim(username, " \r\n")
 
 	wlcMsg := fmt.Sprintf("welcome %s , to the chat , say Hi to your friends ♥ \n", username)
 
 	fmt.Println(wlcMsg)
 	go read(conn)
-	write(conn,username)
+	write(conn, username)
 }
 
 func write(conn net.Conn, username string) {
 	for {
 		reader := bufio.NewReader(os.Stdin)
 		msg, err := reader.ReadString('\n')
-		if err != nil{
+		if err != nil {
 			break
 		}
-		msg = fmt.Sprintf("%s:  %s \n",username, strings.Trim(msg," \n\r"))
-		conn.Write([]byte(msg))	}
+		msg = fmt.Sprintf("(%s)  \"%s\" \n", username, strings.Trim(msg, " \n\r"))
+		conn.Write([]byte(msg))
+	}
 }
 
 func read(conn net.Conn) {
-	for{
+	for {
 		reader := bufio.NewReader(conn)
 		msg, err := reader.ReadString('\n')
 		if err == io.EOF {
@@ -54,6 +56,5 @@ func read(conn net.Conn) {
 			os.Exit(0)
 		}
 		fmt.Println(msg)
-		fmt.Println("*******************************")
 	}
 }
